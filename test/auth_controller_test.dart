@@ -7,7 +7,9 @@ import 'package:mocktail/mocktail.dart';
 class MockAuthRepository extends Mock implements FakeAuthRepository {}
 
 class Listener<T> extends Mock {
-  void call(T? previous, T? next);
+  void call(T? previous, T? next) {
+//    print('Listener.call $previous $next');
+  }
 }
 
 void main() {
@@ -100,5 +102,35 @@ void main() {
       verifyNoMoreInteractions(listener);
       verify(authRepository.signOut).called(1);
     });
+
+    test('signInAnonymously success', () async {
+      // setup
+      final authRepository = MockAuthRepository();
+      final container = makeProviderContainer(authRepository);
+      final controller = container.read(authControllerProvider.notifier);
+      when(authRepository.signInAnonymously).thenAnswer((_) => Future.value());
+      final listener = Listener<AsyncValue<void>>();
+      container.listen(
+        authControllerProvider,
+        listener,
+        fireImmediately: true,
+      );
+      // run
+      await controller.signInAnonymously();
+      // verify
+      verifyInOrder([
+        // initial value from build method
+        () => listener(null, const AsyncData<void>(null)),
+        // set loading state
+        () => listener(const AsyncData<void>(null), const AsyncLoading<void>()),
+        // data when complete
+        () => listener(const AsyncLoading<void>(), const AsyncData<void>(null)),
+      ]);
+      verifyNoMoreInteractions(listener);
+      verify(authRepository.signInAnonymously).called(1);
+      verifyNever(authRepository.signOut);
+    });
+
+
   });
 }
