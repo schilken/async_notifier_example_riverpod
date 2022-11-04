@@ -21,6 +21,7 @@ class AuthButton extends ConsumerWidget {
       },
     );
     final state = ref.watch(authControllerProvider);
+    print('AuthButton.state: $state');
     return SizedBox(
       width: 200,
       height: 60,
