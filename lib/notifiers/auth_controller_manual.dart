@@ -6,8 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthController extends AsyncNotifier<void> {
   @override
-  FutureOr<void> build() {
+  FutureOr<void> build() async {
     // return a value (or do nothing if the return type is void)
+    await Future.delayed(Duration(milliseconds: 1000));
   }
 
   Future<void> signInAnonymously() async {
