@@ -8,23 +8,18 @@ class RiverpodLogger extends ProviderObserver {
     Object? newValue,
     ProviderContainer container,
   ) {
-    print('''
-didUpdateProvider → "provider": "${provider.name ?? provider.runtimeType}",  "newValue": "$newValue"
-''');
+    print(
+        'didUpdateProvider → ${provider.name ?? provider.runtimeType},  "newValue": "$newValue"');
   }
 
   @override
   void didDisposeProvider(ProviderBase provider, ProviderContainer container) {
-    print('''
-didDisposeProvider → "provider": "${provider.name ?? provider.runtimeType}"
-''');
+    print('didDisposeProvider → ${provider.name ?? provider.runtimeType}');
   }
 
   @override
   void didAddProvider(
       ProviderBase provider, Object? value, ProviderContainer container) {
-    print('''
-didAddProvider → "provider": "${provider.name ?? provider.runtimeType}"
-''');
+    print('didAddProvider → ${provider.name ?? provider.runtimeType}');
   }
 }
